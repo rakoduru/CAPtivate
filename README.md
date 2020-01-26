@@ -9,5 +9,5 @@ TODO
 ### Maintainers
 
 #### Adithya Selvaprithiviraj
-#### Rashmitha Choudary Koduru
-#### Shubangi Shrivastava
+#### Rasmitha Choudary Koduru
+#### Shubhangi Shrivastava
