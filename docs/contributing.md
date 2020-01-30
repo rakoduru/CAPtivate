@@ -2,6 +2,8 @@
 
 (This is just a draft and suggestions for improvements are welcomed)
 
+We would be following a developement model similar to https://trunkbaseddevelopment.com.
+
 ### Development Task Workflow
 
 When you start working on a Task
