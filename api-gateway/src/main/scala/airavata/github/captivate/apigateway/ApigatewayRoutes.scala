@@ -34,4 +34,38 @@ object ApigatewayRoutes {
         } yield resp
     }
   }
+
+  def dataRetrievalRoute[F[_]: Sync](): HttpRoutes[F] = {
+    val dsl = new Http4sDsl[F]{}
+    import dsl._
+    HttpRoutes.of[F] {
+      case GET -> Root / "data-retrieval"  =>
+        for {
+          resp <- Ok("Success")
+        } yield resp
+    }
+  }
+
+  def predictionRoute[F[_]: Sync](): HttpRoutes[F] = {
+    val dsl = new Http4sDsl[F]{}
+    import dsl._
+    HttpRoutes.of[F] {
+      case GET -> Root / "predict"  =>
+        for {
+          resp <- Ok("Success")
+        } yield resp
+    }
+  }
+
+  def postProcessingRoute[F[_]: Sync](): HttpRoutes[F] = {
+    val dsl = new Http4sDsl[F]{}
+    import dsl._
+    HttpRoutes.of[F] {
+      case GET -> Root / "post-process"  =>
+        for {
+          resp <- Ok("Success")
+        } yield resp
+    }
+  }
+
 }
