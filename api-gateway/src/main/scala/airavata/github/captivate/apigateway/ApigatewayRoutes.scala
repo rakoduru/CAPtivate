@@ -4,6 +4,7 @@ import cats.effect.Sync
 import cats.implicits._
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
+import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 
 object ApigatewayRoutes {
 
@@ -19,13 +20,16 @@ object ApigatewayRoutes {
     }
   }
 
-  def userManagementRoute[F[_]: Sync](H: UserManagement[F]): HttpRoutes[F] = {
+  def userManagementRoute[F[_]: Sync](H: UserManagement[F] , producer: Option[KafkaProducer[String, String]]): HttpRoutes[F] = {
     val dsl = new Http4sDsl[F]{}
     import dsl._
     HttpRoutes.of[F] {
       case GET -> Root / "usermanagement" / name =>
         for {
           greeting <- H.greet(UserManagement.Name(name, ""))
+          _ = producer.map {
+            p => p.send(new ProducerRecord[String, String]("test", name))
+          }
           resp <- Ok(greeting)
         } yield resp
     }

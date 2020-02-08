@@ -19,7 +19,7 @@ class ApiGatewaySpec extends org.specs2.mutable.Specification {
   private[this] val retGreeting: Response[IO] = {
     val getHW = Request[IO](Method.GET, uri"/usermanagement/Adithya")
     val userGreetings = UserManagement.impl[IO]
-    ApigatewayRoutes.userManagementRoute(userGreetings).orNotFound(getHW).unsafeRunSync()
+    ApigatewayRoutes.userManagementRoute(userGreetings, None).orNotFound(getHW).unsafeRunSync()
   }
 
   private[this] def uriReturns200(): MatchResult[Status] =
