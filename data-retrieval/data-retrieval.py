@@ -3,10 +3,15 @@ import time
 import requests
 from pymongo import MongoClient
 import json
+from kafka import KafkaProducer
 
 mclient = MongoClient(port=27014)
 
 db = mclient.foo2
+
+producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
+                         value_serializer=lambda x: 
+                         json.dumps(x, default = str).encode('utf-8'))
 
 consumer = KafkaConsumer(
     'data-retrieval',
@@ -19,7 +24,7 @@ url ='https://www.ncdc.noaa.gov/cdo-web/api/v2/data'
 while True:
     m = consumer.poll()
     # params = {'datasetid': 'GHCND', 'locationid':'ZIP:28801', 'startdate': '2010-05-01', 'enddate': '2010-05-01'}
-    params = {'datasetid': 'GHCND', 'units': 'metric'}
+    params = {'datasetid': 'GHCND', 'units': 'metric', 'datatypeid': 'TMAX', 'includemetadata' : False}
     if bool(m):
         _,v = m.popitem()
         params['locationid']= v[0].value['locationid']
@@ -32,3 +37,4 @@ while True:
         print("From DB")
         r = db.weather.find_one({'_id': result.inserted_id })
         print(r)
+        producer.send('model-execution', value = bar)

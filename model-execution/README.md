@@ -31,5 +31,5 @@ docker pull mongo:4.0.4
 #### Running
 
 ```sh
-python3 prediction-service.py
+python3 model-execution.py
 ```
