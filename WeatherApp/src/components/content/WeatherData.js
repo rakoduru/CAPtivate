@@ -1,30 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row } from 'simple-flexbox';
 import Weather from "./Weather";
 import "./Form.css";
 import { StyleSheet, css } from 'aphrodite/no-important';
+import Jobs from "./Jobs"
+import axios from 'axios';
 
-const apiKey = "8ddceeacaf8b95fe943c88fc8389dee0";
-
-const Title = () => {
-  return (
-    <div>
-      <h2 className="title-container__subtitle">
-        Find out temperature, weather conditions and more...
-      </h2>
-    </div>
-  );
-};
-
-const Form = ({ onWeather }) => {
-  return (
-    <form onSubmit={e => onWeather(e)}>
-      <input type="text" name="city" placeholder="City..." />
-      <input type="text" name="country" placeholder="Country..." />
-      <button className="form-button">get Weather</button>
-    </form>
-  );
-};
 const styles = StyleSheet.create({
     itemTitle: {
         fontFamily: 'Muli',
@@ -40,52 +21,45 @@ const styles = StyleSheet.create({
     }
 });
 
-class WeatherData extends React.Component {
-  state = {
-  temperature: undefined,
-  city: undefined,
-  country: undefined,
-  humidity: undefined,
-  description: undefined,
-  error: undefined
+function WeatherData(props) {
+  const [loading, setLoading] = useState(false);
+  const date = useFormInput('');
+  const zipcode = useFormInput('');
+  const [error, setError] = useState(null);
+const Title = () => {
+  return (
+    <div>
+      <h2 className="title-container__subtitle">
+        Find out temperature, weather conditions and more...
+      </h2>
+    </div>
+  );
 };
 
-getWeather = async e => {
-  e.preventDefault();
-  const city = e.currentTarget.elements.city.value;
-  const country = e.currentTarget.elements.country.value;
-  if (city && country) {
+
+const getWeather = () => {
+  //preventDefault();
+
     try {
-      const apiCall = await fetch(
-        `https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${apiKey}&units=metric`
-      );
-      const { main, sys, name, weather } = await apiCall.json();
-      this.setState({
-        temperature: main.temp,
-        city: name,
-        country: sys.country,
-        humidity: main.humidity,
-        description: weather[0].description,
-        error: ""
+      setError(null);
+      setLoading(true);
+      axios.post('http://localhost:8080/data-retrieval/', { startdate: date.value, locationid: 'ZIP:' + zipcode.value }).then(response => {
+        setLoading(false);
+        //setUserSession(response.data.token, response.data.user);
+        //setUserSession(response.data.accessToken);
+        props.history.push('/Jobs');
+      }).catch(error => {
+        setLoading(false);
+        //if (error.response.status === 401) setError(error.response.data.message);
+        //else setError("Something went wrong. Please try again later.");
+        setError("Something went wrong. Please try again later.");
       });
     } catch (ex) {
       console.log(ex.message);
     }
-  } else {
-    this.setState({
-      temperature: undefined,
-      city: undefined,
-      country: undefined,
-      humidity: undefined,
-      description: undefined,
-      error: "please enter a valid values."
-    });
-  }
-};
+    return (alert('Your details are being fetched..!'));
+}
 
-
-
-    render() {
         return (
           <div className="wrapper">
         <div className="main">
@@ -95,22 +69,26 @@ getWeather = async e => {
                 <Title />
               </div>
               <div className="col-xs-7 form-container">
-                <Form onWeather={this.getWeather} />
-                <Weather
-                  temperature={this.state.temperature}
-                  city={this.state.city}
-                  country={this.state.country}
-                  humidity={this.state.humidity}
-                  description={this.state.description}
-                  error={this.state.error}
-                />
+                  <input type="text" name="date" placeholder="Date..." />
+                  <input type="text" name="zipcode" placeholder="Zipcode..." />
+                  <button className="form-button" onClick={getWeather}>get Weather</button>
               </div>
             </div>
           </div>
         </div>
       </div>
         );
-    }
+}
+const useFormInput = initialValue => {
+  const [value, setValue] = useState(initialValue);
+
+  const handleChange = e => {
+    setValue(e.target.value);
+  }
+  return {
+    value,
+    onChange: handleChange
+  }
 }
 
 export default WeatherData;

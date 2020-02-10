@@ -1,53 +1,58 @@
-import React from 'react';
-import { Column, Row } from 'simple-flexbox';
-import { StyleSheet, css } from 'aphrodite';
-import SidebarComponent from './components/sidebar/SidebarComponent';
-import HeaderComponent from './components/header/HeaderComponent';
-import ContentComponent from './components/content/ContentComponent';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
+import axios from 'axios';
 
-const styles = StyleSheet.create({
-    container: {
-        height: '100%',
-        minHeight: '100vh'
-    },
-    content: {
-        marginTop: 54
-    },
-    mainBlock: {
-        backgroundColor: '#F7F8FC',
-        padding: 30
-    }
-});
+import Login from './Login';
+import Dashboard from './Dashboard';
+import Home from './Home';
 
-class App extends React.Component {
+import PrivateRoute from './Utils/PrivateRoute';
+import PublicRoute from './Utils/PublicRoute';
+import { getToken, removeUserSession, setUserSession } from './Utils/Common';
 
-    state = { selectedItem: 'Overview' };
+function App() {
+  const [authLoading, setAuthLoading] = useState(true);
 
-    componentDidMount() {
-        window.addEventListener('resize', this.resize);
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      return;
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.resize);
-    }
+axios.get(`http://localhost:8080/usermanagement?token=${token}`).then(response => {
+      //setUserSession(response.data.token, response.data.user);
+      setUserSession(response.data.accessToken);
+      setAuthLoading(false);
+    }).catch(error => {
+      removeUserSession();
+      setAuthLoading(false);
+    });
+  }, []);
 
-    resize = () => this.forceUpdate();
+  if (authLoading && getToken()) {
+    return <div className="content">Checking Authentication...</div>
+  }
 
-    render() {
-        const { selectedItem } = this.state;
-        return (
-            <Row className={css(styles.container)}>
-                <SidebarComponent selectedItem={selectedItem} onChange={(selectedItem) => this.setState({ selectedItem })} />
-                <Column flexGrow={1} className={css(styles.mainBlock)}>
-                    <HeaderComponent title={selectedItem} />
-                    <div className={css(styles.content)}>
-                        <ContentComponent />
-                    </div>
-                </Column>
-            </Row>
-        );
-    }
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <div>
+          <div className="header">
+            <NavLink exact activeClassName="active" to="/">Home</NavLink>
+            <NavLink activeClassName="active" to="/login">Login</NavLink>
+            <NavLink activeClassName="active" to="/dashboard">Dashboard</NavLink>
+          </div>
+          <div className="content">
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <PublicRoute path="/login" component={Login} />
+              <PrivateRoute path="/dashboard" component={Dashboard} />
+            </Switch>
+          </div>
+        </div>
+      </BrowserRouter>
+    </div>
+  );
 }
 
 export default App;
