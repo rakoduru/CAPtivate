@@ -35,14 +35,19 @@ object ApigatewayRoutes {
     }
   }
 
-  def dataRetrievalRoute[F[_]: Sync](): HttpRoutes[F] = {
+  def dataRetrievalRoute[F[_]: Sync](producer: Option[KafkaProducer[String, String]]): HttpRoutes[F] = {
     val dsl = new Http4sDsl[F]{}
     import dsl._
     HttpRoutes.of[F] {
-      case GET -> Root / "data-retrieval"  =>
+      case req@ POST -> Root / "data-retrieval"  => req.decode[String] { data =>
         for {
           resp <- Ok("Success")
+          _ = producer.map {
+            p =>
+              p.send(new ProducerRecord[String, String]("data-retrieval", data))
+          }
         } yield resp
+      }
     }
   }
 

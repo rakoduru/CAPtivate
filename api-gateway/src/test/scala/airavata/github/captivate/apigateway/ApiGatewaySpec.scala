@@ -55,8 +55,8 @@ class ApiGatewaySpec extends org.specs2.mutable.Specification {
   }
 
   private[this] val retData: Response[IO] = {
-    val getHW = Request[IO](Method.GET, uri"/data-retrieval")
-    ApigatewayRoutes.dataRetrievalRoute[IO]().orNotFound(getHW).unsafeRunSync()
+    val getHW = Request[IO](Method.POST, uri"/data-retrieval")
+    ApigatewayRoutes.dataRetrievalRoute[IO](None).orNotFound(getHW).unsafeRunSync()
   }
 
   private[this] val retPredict: Response[IO] = {

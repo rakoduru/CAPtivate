@@ -34,7 +34,8 @@ object ApigatewayServer {
 
       httpApp = (
         ApigatewayRoutes.userManagementRoute[F](userAlg, Some(producer)) <+>
-        ApigatewayRoutes.sessionRoute[F](sessionAlg)
+        ApigatewayRoutes.sessionRoute[F](sessionAlg) <+>
+        ApigatewayRoutes.dataRetrievalRoute(Some(producer))
       ).orNotFound
 
       // With Middlewares in place
