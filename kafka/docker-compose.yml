@@ -17,3 +17,4 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "data-retrieval:1:1,model-execution:1:1,postprocessing-analysis:1:1,usermanagement:1:1,sessionmanagement:1:1"
