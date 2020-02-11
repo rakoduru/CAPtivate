@@ -77,6 +77,60 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "kafka",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8181/api/auth/kafka/shubh",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"api",
+						"auth",
+						"kafka",
+						"shubh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "currentUser",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTgxMzg3MDY3LCJleHAiOjE1ODE5OTE4Njd9.e5J3WMtmB401wz1FnlgpOeoSGl1X91_ILw-yMwHpkSmSObPEFVB5oE72ZI4UgG9qzkAqxpQN3zLwTgH_YrRMWQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8181/api/auth/user/me",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"api",
+						"auth",
+						"user",
+						"me"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
