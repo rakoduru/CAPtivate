@@ -4,7 +4,7 @@ Dependencies:
 
 TODO: Evolve the readme as you develop specifically
 
-1. A Running kafka broker at `localhost:9092` with topic `test`.
+1. A Running kafka broker at `localhost:9092` with topic `model-execution`.
 
 2. `Python 3` - [https://www.python.org/downloads/] (https://www.python.org/downloads/).
 
@@ -18,7 +18,7 @@ pip3 install pymongo
 4. start Mongo container using
 
 ```
-docker run -d -p 27017-27019:27017-27019 --name mongodb1 mongo:4.0.4
+docker run -d -p 27017-27019:27017-27019 --name modelexecutiondb mongo:4.0.4
 ```
 
 if you do not have mongo image already pull it from docker repo using
