@@ -10,6 +10,8 @@ import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.Logger
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
+import org.http4s.server.middleware._
+import scala.concurrent.duration._
 
 import scala.concurrent.ExecutionContext.global
 
@@ -32,14 +34,23 @@ object ApigatewayServer {
       userAlg = UserManagement.impl[F]
       sessionAlg = SessionManagement.impl[F]
 
+      methodConfig = CORSConfig(
+        anyOrigin = true,
+        anyMethod = false,
+        allowedMethods = Some(Set("GET", "POST")),
+        allowCredentials = true,
+        maxAge = 1.day.toSeconds)
+
       httpApp = (
         ApigatewayRoutes.userManagementRoute[F](userAlg, Some(producer)) <+>
         ApigatewayRoutes.sessionRoute[F](sessionAlg) <+>
         ApigatewayRoutes.dataRetrievalRoute(Some(producer))
       ).orNotFound
 
+      capp = CORS(httpApp, methodConfig)
+
       // With Middlewares in place
-      finalHttpApp = Logger.httpApp(true, true)(httpApp)
+      finalHttpApp = Logger.httpApp(true, true)(capp)
 
       exitCode <- BlazeServerBuilder[F]
         .bindHttp(8080, "0.0.0.0")
