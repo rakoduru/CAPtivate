@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Row } from 'simple-flexbox';
-import Weather from "./Weather";
 import "./Form.css";
 import { StyleSheet, css } from 'aphrodite/no-important';
 import Jobs from "./Jobs"
 import axios from 'axios';
+import {default as UUID} from "uuid";
+import { getUser, getUserid, setJobid, getJobid, setUserSession, getUsername, setUsername } from './Common';
 
 const styles = StyleSheet.create({
     itemTitle: {
@@ -22,10 +23,24 @@ const styles = StyleSheet.create({
 });
 
 function WeatherData(props) {
+  const userid = getUsername();
   const [loading, setLoading] = useState(false);
   const date = useFormInput('');
   const zipcode = useFormInput('');
   const [error, setError] = useState(null);
+  const jobid = UUID.v4();
+  setJobid(jobid);
+  //const del = getJobid();
+  /*constructor(props) {
+   super(props);
+   this.state = {
+      jobid: ''
+   }
+   this.updateState = this.updateState.bind(this);
+  };
+  updateState() {
+   this.setState({jobid: UUID.v4()})
+ }*/
 const Title = () => {
   return (
     <div>
@@ -43,11 +58,14 @@ const getWeather = () => {
     try {
       setError(null);
       setLoading(true);
-      axios.post('http://localhost:8080/data-retrieval/', { startdate: date.value, locationid: 'ZIP:' + zipcode.value }).then(response => {
+      axios.post('http://localhost:8080/data-retrieval', { date: date.value, location_id: 'ZIP:' + zipcode.value, user_id : userid, job_id: jobid },
+        {headers: {
+            'Content-Type': 'application/json',
+        }}).then(response => {
         setLoading(false);
-        //setUserSession(response.data.token, response.data.user);
+        //setUserSession(response.data.accessToken, response.data.user, response.data.userid);
         //setUserSession(response.data.accessToken);
-        props.history.push('/Jobs');
+        //setUserSession(response.data.userid);
       }).catch(error => {
         setLoading(false);
         //if (error.response.status === 401) setError(error.response.data.message);
@@ -58,6 +76,8 @@ const getWeather = () => {
       console.log(ex.message);
     }
     return (alert('Your details are being fetched..!'));
+    //return (alert(del));
+    props.history.push('/jobs');
 }
 
         return (
@@ -69,9 +89,10 @@ const getWeather = () => {
                 <Title />
               </div>
               <div className="col-xs-7 form-container">
-                  <input type="text" name="date" placeholder="Date..." />
-                  <input type="text" name="zipcode" placeholder="Zipcode..." />
+                  <input type="text" {...date} name="date" placeholder="Date..." />
+                  <input type="text" {...zipcode} name="zipcode" placeholder="Zipcode..." />
                   <button className="form-button" onClick={getWeather}>get Weather</button>
+                  <input type="reset" defaultValue="Reset" />
               </div>
             </div>
           </div>

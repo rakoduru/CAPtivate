@@ -5,6 +5,7 @@ import axios from 'axios';
 import Login from './Login';
 import Dashboard from './Dashboard';
 import Home from './Home';
+import Jobs from './components/content/Jobs';
 
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
@@ -41,12 +42,14 @@ axios.get(`http://localhost:8080/usermanagement?token=${token}`).then(response =
             <NavLink exact activeClassName="active" to="/">Home</NavLink>
             <NavLink activeClassName="active" to="/login">Login</NavLink>
             <NavLink activeClassName="active" to="/dashboard">Dashboard</NavLink>
+            <NavLink activeClassName="active" to="/jobs">Jobs</NavLink>
           </div>
           <div className="content">
             <Switch>
               <Route exact path="/" component={Home} />
               <PublicRoute path="/login" component={Login} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
+              <PrivateRoute path="/jobs" component={Jobs} />
             </Switch>
           </div>
         </div>

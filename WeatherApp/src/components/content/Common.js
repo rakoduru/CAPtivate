@@ -6,7 +6,7 @@ export const getUser = () => {
 }
 export const getJobdata = () => {
   const jobdata = sessionStorage.getItem('value');
-  if (jobdata) return JSON.parse(jobdata);
+  if (jobdata) return jobdata;
   else return null;
 }
 

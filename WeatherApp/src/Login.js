@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { setUserSession } from './Utils/Common';
+import { setUserSession,setUsername } from './Utils/Common';
 
 function Login(props) {
   const [loading, setLoading] = useState(false);
@@ -12,10 +12,11 @@ function Login(props) {
   const handleLogin = () => {
     setError(null);
     setLoading(true);
+    setUsername(username.value)
     axios.post('http://localhost:8181/api/auth/signin/', { usernameOrEmail: username.value, password: password.value }).then(response => {
       setLoading(false);
       //setUserSession(response.data.token, response.data.user);
-      setUserSession(response.data.accessToken);
+      setUserSession(response.data.accessToken, response.data.user);
       props.history.push('/dashboard');
     }).catch(error => {
       setLoading(false);
