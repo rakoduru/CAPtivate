@@ -19,4 +19,10 @@ public class KafkaConsumer {
     public void consumeJson(User user) {
         System.out.println("Consumed JSON Message: " + user);
     }
+    
+    @KafkaListener(topics = "Kafka_Example", groupId = "group_long",
+            containerFactory = "userKafkaListenerFactory")
+    public void consumeJson(Long longInt) {
+        System.out.println("Consumed Long Message: " + longInt);
+    }
 }

@@ -58,7 +58,7 @@ public class AuthController {
     JwtTokenProvider tokenProvider;
     
     @Autowired
-    private KafkaTemplate<String, UserSummary> kafkaTemplate;
+    private KafkaTemplate<String, Long> kafkaTemplate;
 
     private static final String TOPIC = "user_mgmt";
     
@@ -73,8 +73,7 @@ public class AuthController {
     
     @GetMapping("/dataRetrieval/compose")
     public void produceMessage(@CurrentUser UserPrincipal currentUser) {
-    	UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
-        kafkaTemplate.send(TOPIC, userSummary);
+        kafkaTemplate.send(TOPIC, currentUser.getId());
         return;
     }
     
