@@ -22,17 +22,23 @@ consumer = new Consumer(kafka_client, [{ topic: "sessionmanagement"}, { topic: "
 
 consumer.on("message", function(message) {
     console.log(message);
+    let m = eval('(' + message.value + ')')
     if(message.topic == "sessionmanagement") {
-        db.collection("sessions").insertOne(message)
+        db.collection("sessions").insertOne(m)
     }
     else {
         let m = eval('(' + message.value + ')')
-        db.collection("sessions").updateOne({"id": m.id}, {$set : m})
+        db.collection("sessions").updateOne({"user_id": m.user_id, "job_id": m.job_id}, {$set : m})
     }
 });
  
-app.get('/', function (req, res) {
-  res.send('Hello from session management')
+app.get('/getbyid', function (req, res) {
+    var id = req.query.user_id
+    console.log(id);
+    db.collection("sessions").find({"user_id" : id}).toArray(function(err, result) {
+    if (err) throw err;
+    res.send(result);
+    });
 })
  
 app.listen(3005)

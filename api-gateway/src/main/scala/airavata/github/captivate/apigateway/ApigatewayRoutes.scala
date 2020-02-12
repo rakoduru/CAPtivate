@@ -45,6 +45,7 @@ object ApigatewayRoutes {
           _ = producer.map {
             p =>
               p.send(new ProducerRecord[String, String]("data-retrieval", data))
+              p.send(new ProducerRecord[String, String]("sessionmanagement", data))
           }
         } yield resp
       }
