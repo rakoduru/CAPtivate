@@ -4,6 +4,12 @@ Requirements:
 1. Install Nodejs and npm package (can be installed from https://nodejs.org/en/ any version greater than 9. Follow the instructions to download nodejs and npm)
 ------------
 
+3. Start MongoDB container using
+
+```
+docker run -d -p 27023-27025:27017-27019 --name mongodb3 mongo:4.0.4
+```
+
 2.Run the command
 ```sh
 npm install

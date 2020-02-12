@@ -4,6 +4,7 @@ import requests
 from pymongo import MongoClient
 import json
 from kafka import KafkaProducer
+import copy
 
 mclient = MongoClient(port=27014)
 
@@ -33,8 +34,11 @@ while True:
         
         r = requests.get(url, params = params, headers = headers)
         bar = json.loads(r.text)
-        result = db.weather.insert_one(bar)
-        print("From DB")
-        r = db.weather.find_one({'_id': result.inserted_id })
-        print(r)
-        producer.send('model-execution', value = bar)
+        tmax = {"id": "someid", "date": params['startdate'], "tmax": bar['results'][0]['value']}
+        print(tmax)
+        mongosend = copy.deepcopy(tmax)
+        result = db.weather.insert_one(mongosend)
+        # print("From DB")
+        # r = db.weather.find_one({'_id': result.inserted_id })
+        # print(tmax)
+        producer.send('model-execution', value = tmax)
