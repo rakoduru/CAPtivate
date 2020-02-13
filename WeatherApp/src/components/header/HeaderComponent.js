@@ -2,7 +2,7 @@ import React from 'react';
 import { string } from 'prop-types';
 import { Row } from 'simple-flexbox';
 import { StyleSheet, css } from 'aphrodite';
-
+import { getUsername } from '../../Utils/Common';
 
 const styles = StyleSheet.create({
     avatar: {
@@ -60,13 +60,14 @@ const styles = StyleSheet.create({
 
 function HeaderComponent(props) {
     const { icon, title, ...otherProps } = props;
+    const userid = getUsername();
     return (
         <Row className={css(styles.container)} vertical="center" horizontal="space-between" {...otherProps}>
             <span className={css(styles.title)}>{title}</span>
             <Row vertical="center">
                 <div className={css(styles.separator)}></div>
                 <Row vertical="center">
-                    <span className={css(styles.name, styles.cursorPointer)}>Rasmitha</span>
+                    <span className={css(styles.name, styles.cursorPointer)}>{userid}</span>
                     <img src="" alt="avatar" className={css(styles.avatar, styles.cursorPointer)} />
                 </Row>
             </Row>

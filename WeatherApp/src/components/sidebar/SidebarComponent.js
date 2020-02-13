@@ -8,9 +8,10 @@ import IconContacts from '../../assets/icon-contacts';
 import IconAgents from '../../assets/icon-agents';
 import IconSubscription from '../../assets/icon-subscription';
 import IconBurger from '../../assets/icon-burger';
-import Jobs from './Jobs';
+import Jobs from '../../Jobs';
 import Profile from './Profile';
-import Logout from './Logout';
+import Home from '../../Home';
+import PrivateRoute from '../../Utils/PrivateRoute';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 const styles = StyleSheet.create({
@@ -97,8 +98,8 @@ class SidebarComponent extends React.Component {
           <BrowserRouter>
           <Switch>
            <Route path="/profile" component={ Profile} exact/>
-           <Route path="/jobs" component={Jobs}/>
-           <Route path="/logout" component={Logout}/>
+           <PrivateRoute path="/jobs" component={Jobs}/>
+           <Route path="/logout" component={Home}/>
          </Switch>
             <div style={{ position: 'relative' }}>
                 <Row className={css(styles.mainContainer)} breakpoints={{ 768: css(styles.mainContainerMobile, expanded && styles.mainContainerExpanded) }}>
@@ -126,7 +127,7 @@ class SidebarComponent extends React.Component {
                             <MenuItemComponent
                                 title="Logout" icon={IconSubscription}
                                 //onClick={() => this.onItemClicked('Logout')}
-                                onClick={event => window.location.href='/logout'}
+                                onClick={event => window.location.href='/home'}
                                 //active={this.props.selectedItem === 'Logout'}
                                 />
                         </Column>

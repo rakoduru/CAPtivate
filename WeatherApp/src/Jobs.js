@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import debounceRender from 'react-debounce-render'
-import { getUser, getUserid, getJobid, removeUserSession, setJobSession, getUsername, getDate, getLocation, getTemp, getJobdata} from './Common';
+import { getUser, getUserid, getJobid, removeUserSession, setJobSession, getUsername, getDate, getLocation, getTemp, getJobdata} from './Utils/Common';
 import axios from 'axios';
 
 function Jobs(props){
@@ -11,11 +11,9 @@ function Jobs(props){
   //const date = getDate();
   //const location = getLocation();
   //const temperature = getTemp();
-  //const jobdetails = getJobdata();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   console.log(userid);
-  //console.log(jobdetails);
 
 
   const handlejobs = () => {
@@ -26,17 +24,10 @@ function Jobs(props){
         setLoading(false);
         //setJobSession(response.data.value.date, response.data.value.location_id, response.data.value.tmax);
         console.log(response.data);
-        //setJobSession(response.data);
+        setJobSession(response.data);
         //setUserSession(response.data.accessToken);
         //setUserSession(response.data.userid);
-        return(
-          <div>
-            Here are your job details : <br></br>
-            Temperature : {response.data[0].tmax}<br></br>
-            Date : {response.data[0].date}<br></br>
-            Location : {response.data[0].location_id}<br></br>
-          </div>
-        );
+
 
       }).catch(error => {
         setLoading(false);
@@ -47,7 +38,17 @@ function Jobs(props){
     } catch (ex) {
       console.log(ex.message);
     }
+    const jobdetails = getJobdata();
+    console.log('raas' + jobdetails[0].location_id);
 
+    return(
+      <div>
+        Here are your job details : <br></br>
+        Temperature : {jobdetails[0].tmax}<br></br>
+        Date : {jobdetails[0].date}<br></br>
+        Location : {jobdetails[0].location_id}<br></br>
+      </div>
+    );
 }
 /*return Object.keys(this.state.response).map( (row, index) => (
      <TableRow key={index} selected="false">
@@ -57,7 +58,7 @@ function Jobs(props){
 )) */
 return (
   <div>
-  Hi {userid}
+  Hi {userid} :
   <input type="button" value={loading ? 'Loading...' : 'Fetch Jobs'} onClick={handlejobs} disabled={loading} /><br />
 
   </div>

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Row } from 'simple-flexbox';
 import "./Form.css";
 import { StyleSheet, css } from 'aphrodite/no-important';
-import Jobs from "./Jobs"
+import Jobs from "../../Jobs"
 import axios from 'axios';
 import {default as UUID} from "uuid";
-import { getUser, getUserid, setJobid, getJobid, setUserSession, getUsername, setUsername } from './Common';
+import { getUser, getUserid, setJobid, getJobid, setUserSession, getUsername, setUsername } from '../../Utils/Common';
 
 const styles = StyleSheet.create({
     itemTitle: {
@@ -89,7 +89,7 @@ const getWeather = () => {
                 <Title />
               </div>
               <div className="col-xs-7 form-container">
-                  <input type="text" {...date} name="date" placeholder="Date..." />
+                  <input type="text" {...date} name="date" placeholder="Date(YYYY-MM-DD)" />
                   <input type="text" {...zipcode} name="zipcode" placeholder="Zipcode..." />
                   <button className="form-button" onClick={getWeather}>get Weather</button>
                   <input type="reset" defaultValue="Reset" />

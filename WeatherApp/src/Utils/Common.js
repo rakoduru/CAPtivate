@@ -65,7 +65,7 @@ export const setUserSession = (token, user, userid) => {
   sessionStorage.setItem('temp', temp);
 }*/
 export const setJobSession = (value) => {
-  sessionStorage.setItem('value', value);
+  sessionStorage.setItem('value', JSON.stringify(value));
 }
 
 export const setUsername = (username) => {
