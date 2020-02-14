@@ -56,10 +56,29 @@ const jobdetails = getJobdata();
      </TableRow>
 )) */
   //console.log(val);
-  const handleEdit = () => {
-    props.history.push('/dashboard');
+  /*const handleCopy = () => {
+    try {
+      setError(null);
+      setLoading(true);
+      axios.post('http://localhost:8080/data-retrieval', { date: date.value, location_id: 'ZIP:' + zipcode.value, user_id : userid, job_id: jobid },
+        {headers: {
+            'Content-Type': 'application/json',
+        }}).then(response => {
+        setLoading(false);
+        //setUserSession(response.data.accessToken, response.data.user, response.data.userid);
+        //setUserSession(response.data.accessToken);
+        //setUserSession(response.data.userid);
+      }).catch(error => {
+        setLoading(false);
+        //if (error.response.status === 401) setError(error.response.data.message);
+        //else setError("Something went wrong. Please try again later.");
+        setError("Something went wrong. Please try again later.");
+      });
+    } catch (ex) {
+      console.log(ex.message);
+    }
 
-}
+}*/
   const renderTable = () => {
     return data.map(value => {
       if(value.tmax){
@@ -68,13 +87,38 @@ const jobdetails = getJobdata();
             <td>{value.date}</td>
             <td>{value.location_id}</td>
             <td>{value.tmax}</td>
+            <td>{value.tmin}</td>
+            <td>{value.comment}</td>
+            <td>{value.status}</td>
+          </tr>
+        )
+      }
+      else{
+        return (
+          <tr>
+            <td>{value.date}</td>
+            <td>{value.location_id}</td>
+            <td>Fetching...</td>
+            <td>Fetching...</td>
+            <td>Fetching...</td>
+            <td>{value.status}</td>
           </tr>
         )
       }
     })
   }
 
-  if(flagvar==1){
+  if(flagvar==0 ){
+    return(
+      <div>
+      Hi {userid} :
+      <input type="button" value={loading ? 'Loading...' : 'Fetch Jobs'} onClick={handlejobs} disabled={loading} /><br />
+
+      </div>
+    );
+  }
+  else {
+
     return(
       /*<div>
           Here are your job details : <br></br>
@@ -83,6 +127,7 @@ const jobdetails = getJobdata();
           Date : {jobdetails[0].date}<br></br>
           Location : {jobdetails[0].location_id}<br></br>
         </div>*/
+
         <div>
       <h1 id="title">Jobs</h1>
       <table id="users">
@@ -90,24 +135,16 @@ const jobdetails = getJobdata();
           <tr>
             <th>Date</th>
             <th>Location</th>
-            <th>Temperature</th>
+            <th>Max-Temperature</th>
+            <th>Min-Temperature</th>
+            <th>Comment</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>{renderTable()}</tbody>
       </table>
+      <input type="button" value={loading ? 'Loading...' : 'Refresh'} onClick={handlejobs} disabled={loading} /><br />
     </div>
-      );
-
-
-  }
-  else {
-
-      return(
-        <div>
-        Hi {userid} :
-        <input type="button" value={loading ? 'Loading...' : 'Fetch Jobs'} onClick={handlejobs} disabled={loading} /><br />
-
-        </div>
       );
 
   }
