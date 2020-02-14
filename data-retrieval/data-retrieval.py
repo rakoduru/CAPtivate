@@ -5,7 +5,7 @@ from pymongo import MongoClient
 import json
 from kafka import KafkaProducer
 import copy
-from datetime import date
+from datetime import datetime
 
 mclient = MongoClient(port=27014)
 
@@ -35,17 +35,19 @@ while True:
             }
 
 
-            parsed_date = date.fromisoformat(weather_req['date'])
+            parsed_date = datetime.strptime(weather_req['date'], "%Y-%m-%d")
 
-            if parsed_date > date.today() :
+            if parsed_date > datetime.today() :
                 req_date = parsed_date.replace(year = 2005)
+                req_date = datetime.strftime(req_date, "%Y-%m-%d")
             else :
                 req_date = parsed_date
+                req_date = datetime.strftime(req_date, "%Y-%m-%d")
 
             
             params['locationid']= weather_req['location_id']
-            params['startdate'] = str(req_date)
-            params['enddate'] = str(req_date)
+            params['startdate'] = req_date
+            params['enddate'] = req_date
 
             response = requests.get(url, params = params, headers = headers)
             # print(response.text)
@@ -74,7 +76,7 @@ while True:
             time.sleep(30)
             producer.send('model-execution', value = weather_details)
         except Exception as e:
-            # print(e)
+            print(e)
             error_details = {
                 "user_id": weather_req['user_id'],
                 "job_id": weather_req['job_id'],
@@ -85,7 +87,7 @@ while True:
                 "error": "There was an error processing your query"
             }
             print(error_details)
-            mongosend = copy.deepcopy(weather_details)
+            mongosend = copy.deepcopy(error_details)
             result = db.weather.insert_one(mongosend)
             producer.send('session-update', value = error_details)
                     
