@@ -17,13 +17,27 @@ producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
 client = MongoClient('localhost:27020')
 db = client.postprocess
 
+# Todo: Improve this
+def comment_on_weather(tmax, tmin):
+    if (tmax > 25):
+        return "It is a Hot day"
+    elif(tmin < 5):
+        return "The day is too cold"
+    else:
+        return "Its a gloomy day"
+        
+
 while True:
-    message = consumer.poll()
-    if bool(message):
-        _,v = message.popitem()
-        weather = v[0].value
+    for message in consumer:
+        
+        weather = message.value
+
+        weather["comment"] = comment_on_weather(weather['tmax'],weather['tmin'])
+
         print(weather)
+        
         mongosend = copy.deepcopy(weather)
-        result = db.weather.insert_one(mongosend)
+        
+        result = db.post_process.insert_one(mongosend)
 
         producer.send('session-update', value = weather)

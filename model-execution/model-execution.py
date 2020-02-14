@@ -7,7 +7,7 @@ import copy
 
 mclient = MongoClient(port=27017)
 
-db = mclient.foo
+db = mclient.model_result
 
 producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
                          value_serializer=lambda x: 
@@ -19,18 +19,18 @@ consumer = KafkaConsumer(
      value_deserializer=lambda x: json.loads(x.decode('utf-8')))
 
 while True:
-    m = consumer.poll()
-    
-    if bool(m):
-        # print(m)
-        _,v = m.popitem()
-        weather = v[0].value
+    for message in consumer:
+        weather = message.value
+
+        # Account for global warming ;)
+        # Todo: Improve prediction Algorithm 
+        weather["tmax"] += 1.8
+
         print(weather)
+
         mongosend = copy.deepcopy(weather)
         result = db.weather.insert_one(mongosend)
-        # print(result.inserted_id)
-        # print("Inside DB")
-        # print(db.model.find_one({"_id": result.inserted_id}))
+        
         producer.send('postprocessing-analysis', value = weather)
               
 
