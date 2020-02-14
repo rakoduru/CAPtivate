@@ -112,18 +112,7 @@ class SidebarComponent extends React.Component {
                                 onClick={() => this.onItemClicked('Overview')}
                                 active={this.props.selectedItem === 'Overview'}
                             />
-                            <MenuItemComponent
-                                title="Profile" icon={IconContacts}
-                                //onClick={() => this.onItemClicked('Profile')}
-                                onClick={event => window.location.href='/profile'}
-                                //active={this.props.selectedItem === 'Profile'}
-                                />
-                            <MenuItemComponent
-                                title="Jobs" icon={IconAgents}
-                                //onClick={() => this.onItemClicked('Jobs')}
-                                onClick={event => window.location.href='/jobs'}
-                                //active={this.props.selectedItem === 'Jobs'}
-                                />
+                            
                             <MenuItemComponent
                                 title="Logout" icon={IconSubscription}
                                 //onClick={() => this.onItemClicked('Logout')}

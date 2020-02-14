@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import debounceRender from 'react-debounce-render'
-import { getUser, getUserid, getJobid, removeUserSession, setJobSession, getUsername, getDate, getLocation, getTemp, getJobdata} from './Utils/Common';
+import { getUser, getUserid, getJobid, removeUserSession, setJobSession, getUsername, getDate, getLocation, getTemp, getJobdata } from './Utils/Common';
 import axios from 'axios';
 
 function Jobs(props){
@@ -8,14 +8,15 @@ function Jobs(props){
   //await sleep(10000);
   const userid = getUsername();
   const jobid = getJobid();
+  //const jobdetails = getJobdata();
+  //var val = false;
   //const date = getDate();
   //const location = getLocation();
   //const temperature = getTemp();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  console.log(userid);
-
-
+  const [flagvar, setflagvar] = useState(0);
+  const [data, setData] = useState([])
   const handlejobs = () => {
     try {
       setError(null);
@@ -25,6 +26,9 @@ function Jobs(props){
         //setJobSession(response.data.value.date, response.data.value.location_id, response.data.value.tmax);
         console.log(response.data);
         setJobSession(response.data);
+        setflagvar(flagvar+1);
+        setData(response.data)
+        //setVal(true);
         //setUserSession(response.data.accessToken);
         //setUserSession(response.data.userid);
 
@@ -38,33 +42,77 @@ function Jobs(props){
     } catch (ex) {
       console.log(ex.message);
     }
-    const jobdetails = getJobdata();
-    console.log('raas' + jobdetails[0].location_id);
 
-    return(
-      <div>
-        Here are your job details : <br></br>
-        Temperature : {jobdetails[0].tmax}<br></br>
-        Date : {jobdetails[0].date}<br></br>
-        Location : {jobdetails[0].location_id}<br></br>
-      </div>
-    );
+    //val = getValue();
+    //console.log("value" + val);
+    //console.log('raas' + jobdetails[0].location_id);
 }
+const jobdetails = getJobdata();
+//console.log("jooooooooooobs " + jobdetails[1].tmax);
 /*return Object.keys(this.state.response).map( (row, index) => (
      <TableRow key={index} selected="false">
          <TableRowColumn>Test</TableRowColumn>
          <TableRowColumn>Test</TableRowColumn>
      </TableRow>
 )) */
-return (
-  <div>
-  Hi {userid} :
-  <input type="button" value={loading ? 'Loading...' : 'Fetch Jobs'} onClick={handlejobs} disabled={loading} /><br />
-
-  </div>
-
-);
+  //console.log(val);
+  const handleEdit = () => {
+    props.history.push('/dashboard');
 
 }
+  const renderTable = () => {
+    return data.map(value => {
+      if(value.tmax){
+        return (
+          <tr>
+            <td>{value.date}</td>
+            <td>{value.location_id}</td>
+            <td>{value.tmax}</td>
+          </tr>
+        )
+      }
+    })
+  }
+
+  if(flagvar==1){
+    return(
+      /*<div>
+          Here are your job details : <br></br>
+
+          Temperature : {jobdetails[0].tmax}<br></br>
+          Date : {jobdetails[0].date}<br></br>
+          Location : {jobdetails[0].location_id}<br></br>
+        </div>*/
+        <div>
+      <h1 id="title">Jobs</h1>
+      <table id="users">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Temperature</th>
+          </tr>
+        </thead>
+        <tbody>{renderTable()}</tbody>
+      </table>
+    </div>
+      );
+
+
+  }
+  else {
+
+      return(
+        <div>
+        Hi {userid} :
+        <input type="button" value={loading ? 'Loading...' : 'Fetch Jobs'} onClick={handlejobs} disabled={loading} /><br />
+
+        </div>
+      );
+
+  }
+
+}
+
 
 export default debounceRender(Jobs, 10000);

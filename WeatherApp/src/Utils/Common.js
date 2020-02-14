@@ -33,6 +33,11 @@ export const getJobid = () => {
 export const getToken = () => {
   return sessionStorage.getItem('token') || null;
 }
+export const getValue = () => {
+  const flag = sessionStorage.getItem('value1');
+  if (flag) return true;
+  else return null;
+}
 
 // remove the token and user from the session storage
 export const removeUserSession = () => {
@@ -66,6 +71,9 @@ export const setUserSession = (token, user, userid) => {
 }*/
 export const setJobSession = (value) => {
   sessionStorage.setItem('value', JSON.stringify(value));
+}
+export const setValue = (value1) => {
+  sessionStorage.setItem('value1', value1);
 }
 
 export const setUsername = (username) => {

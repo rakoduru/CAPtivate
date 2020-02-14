@@ -75,7 +75,7 @@ const getWeather = () => {
     } catch (ex) {
       console.log(ex.message);
     }
-    return (alert('Your details are being fetched..!'));
+    return (alert('Successfully submitted details! Please come back and check jobs page for your results'));
     //return (alert(del));
     props.history.push('/jobs');
 }
