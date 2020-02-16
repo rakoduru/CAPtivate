@@ -63,7 +63,7 @@ while True:
                 "job_id": weather_req['job_id'],
                 "location_id": weather_req['location_id'],
                 "date": weather_req['date'],
-                "status": weather_req['status'],
+                "status": "Done",
                 # Number of fields will improve
                 "tmax": tmax[0]['value'],
                 "tmin": tmin[0]['value']
