@@ -3,6 +3,7 @@ const app = express()
 const kafka = require("kafka-node")
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
+var cors = require('cors');
 
 const url = 'mongodb://localhost:27023';
 
@@ -31,6 +32,8 @@ consumer.on("message", function(message) {
         db.collection("sessions").updateOne({"user_id": m.user_id, "job_id": m.job_id}, {$set : m})
     }
 });
+
+app.use(cors());
  
 app.get('/getbyid', function (req, res) {
     var id = req.query.user_id
