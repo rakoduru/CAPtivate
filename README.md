@@ -15,6 +15,12 @@ Feel free to create issues and report bugs if you find something wrong in the pr
 
 ---
 
+#### Latest Release
+Branch - **release/project1-0.0.1**
+
+**Kindly pull code from the _release/project1-0.0.1_ branch for Assignment 1.**
+
+
 #### Project Setup Instructions
 
 Download or pull the repository in to your local machine. The following steps detail the steps needed to set up and run the project. 
@@ -96,7 +102,7 @@ In-order to run the service do the following.
     
     `http://localhost:8081/`
     
-    4. In the resulting page, enter the following values in the respective text fields.
+    4. In the resulting page, enter the following values in the respective text fields to check DB connection.
         * Server: mysql-container
         * Username: root
         * Password: root.CAP2020
@@ -157,7 +163,7 @@ npm start
 http://localhost:3005/
 ```
 
-### Data retrieval service
+### Data retrieval Service, Model Execution Service and Post-Processing and Analysis Service
 
 #### Software Requirements/Dependencies
 
