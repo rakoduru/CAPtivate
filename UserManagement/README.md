@@ -1,6 +1,21 @@
-### Software requirements
+## Steps to run User Management service
+
+### Method 1
+
+#### Software requirements/dependencies
+[Docker](https://www.docker.com/products/docker-desktop)
+
+#### Steps
+Open a command prompt and navigate to the directory UserManagement in the folder containing the project code. Run the following command
+
+```sh
+docker-compose up -d
+```
+
+### Method 2
+
+#### Software requirements/dependencies
 - [Java 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-- [Tomcat Server v9.0](https://tomcat.apache.org/download-90.cgi) - Download the Windows Service Installer (32-bit/64-bit Windows Service Installer (pgp, sha512))
 - [Maven](https://maven.apache.org/download.cgi) - Download the binary zip archive file
 - MySQL
   - Option 1 - Download MySQL server on your local machine
@@ -30,7 +45,7 @@
         * Password: root.CAP2020
         * Database: ads_docker
 
-### Steps
+#### Steps
 After you've downloaded and installed the above in your system, follow these steps to run the Spring Boot application
 1. Unzip maven to a desired location in your computer.
 2. Define 'MAVEN_HOME' in your system variables. It would point to the location of the folder containining the Maven files unzipped in step 2. For eg. _'C:\User\apache-maven-3.6.3'_

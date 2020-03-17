@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+
+  mysql-container:
+    container_name: mysql-container
+    image: mysql:8.0.19
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+    ports:
+      - 3308:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - user-mgmt-network
+
+  user-mgmt:
+    image: user-mgmt-image
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8181:8181
+    environment:
+      #WAIT_HOSTS: mysql-container:3306
+      MYSQL_URL: mysql-container:3306
+      MYSQL_USERNAME: ${MYSQL_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
+      USER_MANAGEMENT_DB: ${MYSQL_DB}
+    networks:
+      - user-mgmt-network
+    depends_on:
+      - mysql-container
+    links:
+      - mysql-container
+
+networks:
+  user-mgmt-network:
+    driver: bridge
+    
+volumes:
+  mysql-data:
+     driver: local

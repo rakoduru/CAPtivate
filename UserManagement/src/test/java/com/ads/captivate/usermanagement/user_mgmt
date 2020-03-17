@@ -16,11 +16,17 @@
 						"name": "Content-Type",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"usernameOrEmail\": \"shubhangi\",\n\t\"password\" : \"Shubhangi\"\n}",
+					"raw": "{\n\t\"usernameOrEmail\": \"johnny\",\n\t\"password\" : \"johndoe\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -64,7 +70,8 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8181/api/auth/signup",
+					"raw": "http://localhost:8181/api/auth/signup",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -106,7 +113,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTgxMzg3MDY3LCJleHAiOjE1ODE5OTE4Njd9.e5J3WMtmB401wz1FnlgpOeoSGl1X91_ILw-yMwHpkSmSObPEFVB5oE72ZI4UgG9qzkAqxpQN3zLwTgH_YrRMWQ",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTgyODU4MDgyLCJleHAiOjE1ODM0NjI4ODJ9.6RJK2SnmEYTpoI76tlvRYiualDq13MxipKpTPog8qqw_eSz7zlsA4eCW5EVQ9YgVTZM2e9kk2WQrof7Osl4_uA",
 						"type": "text"
 					}
 				],
@@ -121,12 +128,6 @@
 						"auth",
 						"user",
 						"me"
-					],
-					"query": [
-						{
-							"key": "",
-							"value": ""
-						}
 					]
 				}
 			},

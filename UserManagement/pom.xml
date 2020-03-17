@@ -12,7 +12,7 @@
 	<groupId>com.ads.captivate</groupId>
 	<artifactId>UserManagement</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>UserManagement</name>
 	<description>UserManagement project for Spring Boot</description>
 
@@ -80,6 +80,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+	            <executions>
+	                <execution>
+	                    <goals>
+	                        <goal>repackage</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
 			</plugin>
 		</plugins>
 	</build>
