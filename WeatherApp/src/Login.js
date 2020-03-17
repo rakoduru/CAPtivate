@@ -14,6 +14,7 @@ function Login(props) {
     setLoading(true);
     setUsername(username.value)
     axios.post('http://localhost:8181/api/auth/signin/', { usernameOrEmail: username.value, password: password.value }).then(response => {
+    //axios.post('http://user-management:8181/api/auth/signin', { usernameOrEmail: username.value, password: password.value }).then(response => {
       setLoading(false);
       //setUserSession(response.data.token, response.data.user);
       setUserSession(response.data.accessToken, response.data.user);

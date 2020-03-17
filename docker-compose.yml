@@ -11,11 +11,11 @@ services:
     image: wurstmeister/kafka:2.11-2.0.0
     depends_on:
     - zookeeper
-    ports:
-    - "9092:9092"
+    expose:
+    - "9092"
     healthcheck:
       test: ["CMD", "nc", "-z", "kafka", "9092"]
-      interval: 15s
+      interval: 55s
       timeout: 10s
       retries: 5
 
@@ -46,7 +46,7 @@ services:
     - 27017
 
   data-retrieval-service:
-    image: captivate.data-retrieval:0.0.1
+    image: adiselv/captivate.data-retrieval:0.0.1
     depends_on:
       kafka:
         condition: service_healthy
@@ -58,7 +58,7 @@ services:
 
 
   model-execution-service:
-    image: captivate.model-execution:0.0.1
+    image: adiselv/captivate.model-execution:0.0.1
     depends_on:
       kafka:
         condition: service_healthy
@@ -69,7 +69,7 @@ services:
       MODEL_EXECUTION_DB: model-execution-db:27017
 
   postprocessing-service:
-    image: captivate.post-process:0.0.1
+    image: adiselv/captivate.post-process:0.0.1
     depends_on:
       kafka:
         condition: service_healthy
@@ -80,7 +80,7 @@ services:
       POST_PROCESSING_DB: postprocessing-db:27017
 
   session-management-service:
-    image: captivate.session-management:0.0.1
+    image: adiselv/captivate.session-management:0.0.1
     depends_on:
       kafka:
         condition: service_healthy
@@ -93,7 +93,7 @@ services:
       SESSION_MANAGEMENT_DB: mongodb://session-management-db:27017
 
   api-gateway:
-    image: captivate.api-gateway:0.0.1
+    image: adiselv/captivate.api-gateway:0.0.1
     depends_on:
       kafka:
         condition: service_healthy
@@ -101,4 +101,46 @@ services:
     - "8080:8080"
     environment:
         KAFKA_SERVER: kafka:9092
-      
+
+  mysql-container:
+    container_name: mysql-container
+    image: mysql:8.0.19
+    environment:
+      MYSQL_ROOT_PASSWORD: root.CAP2020
+      MYSQL_DATABASE: ads_docker
+    expose:
+      - 3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  user-management:
+     image: adiselv/captivate.user-management:0.0.1
+     ports:
+       - "8181:8181"
+     environment:
+       MYSQL_URL: mysql-container:3306
+       MYSQL_USERNAME: root
+       MYSQL_ROOT_PASSWORD: root.CAP2020
+       USER_MANAGEMENT_DB: ads_docker
+     depends_on:
+       - mysql-container
+
+  ui:
+    image: adiselv/captivate.ui:0.0.1
+    ports:
+      - "3000:3000"
+    environment:
+      SESSION_MANAGEMENT_SERVICE: http://session-management-service:3005
+      USER_MANAGEMENT_SERVICE: http://user-management:8181
+      API_GATEWAY: http://api-gateway:8080
+    depends_on:
+      session-management-service:
+        condition: service_started
+      user-management:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+
+volumes:
+  mysql-data:
+    driver: local
