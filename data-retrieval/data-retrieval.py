@@ -6,19 +6,20 @@ import json
 from kafka import KafkaProducer
 import copy
 from datetime import datetime
-
-mclient = MongoClient(port=27014)
-
-db = mclient.weather_data
-
-producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
-                         value_serializer=lambda x: 
-                         json.dumps(x, default = str).encode('utf-8'))
+import os
 
 consumer = KafkaConsumer(
     'data-retrieval',
-     bootstrap_servers=['localhost:9092'],
+     bootstrap_servers=[os.environ['KAFKA_SERVER']],
      value_deserializer=lambda x: json.loads(x.decode('utf-8')))
+
+producer = KafkaProducer(bootstrap_servers=[os.environ['KAFKA_SERVER']],
+                         value_serializer=lambda x: 
+                         json.dumps(x, default = str).encode('utf-8'))
+
+
+mclient = MongoClient(os.environ['DATA_RETRIEVAL_DB'])
+db = mclient.weather_data
 
 headers = {'token':'tlOrjLlVkdmPriWTBeKteqdOURnHqvjL'}
 url ='https://www.ncdc.noaa.gov/cdo-web/api/v2/data'

@@ -1,0 +1,104 @@
+version: '2.3'
+
+services:
+
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    expose:
+    - "2181"
+
+  kafka:
+    image: wurstmeister/kafka:2.11-2.0.0
+    depends_on:
+    - zookeeper
+    ports:
+    - "9092:9092"
+    healthcheck:
+      test: ["CMD", "nc", "-z", "kafka", "9092"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "data-retrieval:1:1,model-execution:1:1,postprocessing-analysis:1:1,usermanagement:1:1,sessionmanagement:1:1,session-update:1:1"
+
+  postprocessing-db:
+    image: mongo:4.0.4
+    expose:
+    - 27017
+
+  data-retrieval-db:
+    image: mongo:4.0.4
+    expose:
+    - 27017
+
+  model-execution-db:
+    image: mongo:4.0.4
+    expose:
+    - 27017
+
+  session-management-db:
+    image: mongo:4.0.4
+    expose:
+    - 27017
+
+  data-retrieval-service:
+    image: captivate.data-retrieval:0.0.1
+    depends_on:
+      kafka:
+        condition: service_healthy
+      data-retrieval-db:
+        condition: service_started
+    environment:
+      KAFKA_SERVER: kafka:9092
+      DATA_RETRIEVAL_DB: data-retrieval-db:27017
+
+
+  model-execution-service:
+    image: captivate.model-execution:0.0.1
+    depends_on:
+      kafka:
+        condition: service_healthy
+      model-execution-db:
+        condition: service_started
+    environment:
+      KAFKA_SERVER: kafka:9092
+      MODEL_EXECUTION_DB: model-execution-db:27017
+
+  postprocessing-service:
+    image: captivate.post-process:0.0.1
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postprocessing-db:
+        condition: service_started
+    environment:
+      KAFKA_SERVER: kafka:9092
+      POST_PROCESSING_DB: postprocessing-db:27017
+
+  session-management-service:
+    image: captivate.session-management:0.0.1
+    depends_on:
+      kafka:
+        condition: service_healthy
+      session-management-db:
+        condition: service_started
+    ports:
+    - "3005:3005"
+    environment:
+      KAFKA_SERVER: kafka:9092
+      SESSION_MANAGEMENT_DB: mongodb://session-management-db:27017
+
+  api-gateway:
+    image: captivate.api-gateway:0.0.1
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+    - "8080:8080"
+    environment:
+        KAFKA_SERVER: kafka:9092
+      

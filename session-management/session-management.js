@@ -5,7 +5,9 @@ const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 var cors = require('cors');
 
-const url = 'mongodb://localhost:27023';
+const url = process.env.SESSION_MANAGEMENT_DB;
+
+console.log(process.env.SESSION_MANAGEMENT_DB);
 
 const mongo_client = new MongoClient(url);
 var db;
@@ -18,7 +20,7 @@ mongo_client.connect(function(err, client) {
 
 
 Consumer = kafka.Consumer,
-kafka_client = new kafka.KafkaClient()
+kafka_client = new kafka.KafkaClient({kafkaHost: process.env.KAFKA_SERVER})
 consumer = new Consumer(kafka_client, [{ topic: "sessionmanagement"}, { topic: "session-update"}])
 
 consumer.on("message", function(message) {

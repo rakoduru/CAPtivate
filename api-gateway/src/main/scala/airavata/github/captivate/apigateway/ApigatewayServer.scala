@@ -18,7 +18,7 @@ import scala.concurrent.ExecutionContext.global
 object ApigatewayServer {
 
   val properties:Properties = new Properties()
-  properties.put("bootstrap.servers","localhost:9092")
+  properties.put("bootstrap.servers",sys.env.getOrElse("KAFKA_SERVER", new Exception("Kafka not defined")))
   properties.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer")
   properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
   properties.put("acks","all")

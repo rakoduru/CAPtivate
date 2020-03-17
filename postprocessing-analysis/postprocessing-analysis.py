@@ -1,5 +1,6 @@
 from kafka import KafkaConsumer
 from pymongo import MongoClient
+import os
 
 from kafka import KafkaProducer
 import json
@@ -7,14 +8,14 @@ import copy
 
 consumer = KafkaConsumer(
     'postprocessing-analysis',
-     bootstrap_servers=['localhost:9092'],
+     bootstrap_servers=[os.environ['KAFKA_SERVER']],
      value_deserializer=lambda x: json.loads(x.decode('utf-8')))
 
-producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
+producer = KafkaProducer(bootstrap_servers=[os.environ['KAFKA_SERVER']],
                          value_serializer=lambda x: 
                          json.dumps(x, default = str).encode('utf-8'))
 
-client = MongoClient('localhost:27020')
+client = MongoClient(os.environ['POST_PROCESSING_DB'])
 db = client.postprocess
 
 # Todo: Improve this
