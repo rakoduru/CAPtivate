@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-execution-db
+spec:
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+  selector:
+    app: model-execution-db
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-execution-db-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: model-execution-db
+  template:
+    metadata:
+      labels:
+        app: model-execution-db
+    spec:
+      containers:
+      - name: model-execution-db
+        image: mongo:4.0.4
+        ports:
+        - containerPort: 27017
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-execution-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: model-execution
+  template:
+    metadata:
+      labels:
+        app: model-execution
+    spec:
+      containers:
+      - name: model-execution
+        image: adiselv/captivate.model-execution:0.0.1
+        env:
+          - name : KAFKA_SERVER
+            value : kafka-service:9092
+          - name : MODEL_EXECUTION_DB
+            value : mongodb://model-execution-db:27017
+

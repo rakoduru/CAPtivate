@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-retrieval-db
+spec:
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+  selector:
+    app: data-retrieval-db
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-retrieval-db-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-retrieval-db
+  template:
+    metadata:
+      labels:
+        app: data-retrieval-db
+    spec:
+      containers:
+      - name: data-retrieval-db
+        image: mongo:4.0.4
+        ports:
+        - containerPort: 27017
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-retrieval-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-retrieval
+  template:
+    metadata:
+      labels:
+        app: data-retrieval
+    spec:
+      containers:
+      - name: data-retrieval
+        image: adiselv/captivate.data-retrieval:0.0.1
+        env:
+          - name : KAFKA_SERVER
+            value : kafka-service:9092
+          - name : DATA_RETRIEVAL_DB
+            value : mongodb://data-retrieval-db:27017
+
