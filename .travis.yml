@@ -5,14 +5,14 @@ node_js:
 services:
   - docker
 
-before_install: cd session-management
+before_install: cd WeatherApp
 script:
   - echo "TODO - add unit test and integration tests"
 after-success:
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_PASSWORD
-  - docker build -t $DOCKER_USER_NAME/captivate.session-management:latest .
-  - docker push $DOCKER_USER_NAME/captivate.session-management:latest
+  - docker build -t $DOCKER_USER_NAME/captivate.ui:latest .
+  - docker push $DOCKER_USER_NAME/captivate.ui:latest
 
 branches:
   only:
-    - deploy/session-management
+    - deploy/user-interface
