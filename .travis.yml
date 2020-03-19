@@ -7,7 +7,7 @@ script:
   - echo "TODO - add unit test and integration tests"
 after-success:
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_PASSWORD
-  - docker build -t $DOCKER_USER_NAME/captivate.data-retrieval:latest
+  - docker build -t $DOCKER_USER_NAME/captivate.data-retrieval:latest .
   - docker push $DOCKER_USER_NAME/captivate.data-retrieval:latest
 
 branches:
