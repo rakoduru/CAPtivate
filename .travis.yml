@@ -1,15 +1,14 @@
-language: scala
+language: java
 
-before_install: cd api-gateway
+before_install: cd UserManagement
 script: 
-  - sbt ++$TRAVIS_SCALA_VERSION compile test:compile
-  - sbt test
+  - 
 
 after-success:
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_PASSWORD
-  - docker build -t $DOCKER_USER_NAME/captivate.api-gateway:latest .
-  - docker push $DOCKER_USER_NAME/captivate.api-gateway:latest
+  - docker build -t $DOCKER_USER_NAME/captivate.user-management:latest .
+  - docker push $DOCKER_USER_NAME/captivate.user-management:latest
 
 branches:
   only:
-    - deploy/api-gateway
+    - deploy/user-management
