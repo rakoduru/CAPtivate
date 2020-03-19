@@ -1,6 +1,15 @@
-language: scala
+language: python
+services:
+  - docker
 
-before_install: cd api-gateway
-script: 
-  - sbt ++$TRAVIS_SCALA_VERSION compile test:compile
-  - sbt test
+before_install: cd data-retrieval
+script:
+  - echo "TODO - add unit test and integration tests"
+after-success:
+  - docker login -u $DOCKER_USER_NAME -p $DOCKER_PASSWORD
+  - docker build -t adiselv/captivate.data-retrieval:latest
+  - docekr push adiselv/captivate.data-retrieval:latest
+
+branches:
+  only:
+    - deploy/data-retrieval
