@@ -17,7 +17,7 @@ Feel free to create issues and report bugs if you find something wrong in the pr
 
 #### Project Setup Instructions
 
-Download or pull the repository in to your local machine. The following steps detail the steps needed to set up and run the project. 
+Download or pull the repository in to your local machine. The following steps detail the steps needed to set up and run the project.  
 
 ```sh
 git clone https://github.com/airavata-courses/CAPtivate.git
