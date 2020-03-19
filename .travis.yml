@@ -1,15 +1,18 @@
-language: python
+language: node_js
+node_js:
+  - 7
+  
 services:
   - docker
 
-before_install: cd postprocessing-analysis
+before_install: cd session-management
 script:
   - echo "TODO - add unit test and integration tests"
 after-success:
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_PASSWORD
-  - docker build -t $DOCKER_USER_NAME/captivate.post-process:latest .
-  - docker push $DOCKER_USER_NAME/captivate.post-process:latest
+  - docker build -t $DOCKER_USER_NAME/captivate.session-management:latest .
+  - docker push $DOCKER_USER_NAME/captivate.session-management:latest
 
 branches:
   only:
-    - deploy/post-process
+    - deploy/session-management
