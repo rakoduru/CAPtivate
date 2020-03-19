@@ -136,7 +136,7 @@ mvn spring-boot:run
 2. Start MongoDB container using
 
 ```
-docker run -d -p 27023-27025:27017-27019 --name sessionmanagementDB mongo:4.0.4
+docker run -d -p 27023-27025:27017-27019 --name sessionmanagementDB mongo:4.0.4 
 ```
 
 3. Run the command
