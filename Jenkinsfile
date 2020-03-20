@@ -8,7 +8,7 @@ pipeline{
     {
 		//echo %GIT_COMMIT%
         //COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
-	    echo ${env.GIT_BRANCH}
+	    echo ${GIT_BRANCH}
     
 		// dir ('./UserManagement') {
 			//sh 'docker build -t adiselv/captivate.user-management .'
