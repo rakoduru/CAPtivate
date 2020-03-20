@@ -7,8 +7,11 @@ script:
 
 after-success:
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_PASSWORD
-  - docker build -t $DOCKER_USER_NAME/captivate.api-gateway:latest .
+  - docker build -t $DOCKER_USER_NAME/captivate.api-gateway:$TRAVIS_COMMIT .
+  - docker tag $DOCKER_USER_NAME/captivate.api-gateway:$TRAVIS_COMMIT $DOCKER_USER_NAME/captivate.api-gateway:latest
   - docker push $DOCKER_USER_NAME/captivate.api-gateway:latest
+  - docker push $DOCKER_USER_NAME/captivate.api-gateway:$TRAVIS_COMMIT  
+  - curl -X POST http://captivate:$JENKINS_USER_TOKEN@$JENKINS_URL/job/deploy_api_gateway/build?token=$JENKINS_JOB_TOKEN
 
 branches:
   only:
