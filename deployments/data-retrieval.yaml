@@ -50,7 +50,8 @@ spec:
     spec:
       containers:
       - name: data-retrieval
-        image: adiselv/captivate.data-retrieval:0.0.1
+        image: adiselv/captivate.data-retrieval:latest
+        imagePullPolicy: Always
         env:
           - name : KAFKA_SERVER
             value : kafka-service:9092

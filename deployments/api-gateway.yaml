@@ -28,7 +28,8 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: adiselv/captivate.api-gateway:0.0.1
+        image: adiselv/captivate.api-gateway:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:

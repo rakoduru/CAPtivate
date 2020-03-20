@@ -51,7 +51,8 @@ spec:
     spec:
       containers:
       - name: model-execution
-        image: adiselv/captivate.model-execution:0.0.1
+        image: adiselv/captivate.model-execution:latest
+        imagePullPolicy: Always
         env:
           - name : KAFKA_SERVER
             value : kafka-service:9092
