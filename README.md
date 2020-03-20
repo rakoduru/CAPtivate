@@ -61,7 +61,7 @@ In-order to run the service do the following.
 - You can run the service by executing  
     `sbt run`
 
-- Inorder to build and run tests do
+- Inorder to build and run tests do 
     ```
        sbt test:compile
        sbt test
