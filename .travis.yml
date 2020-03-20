@@ -13,8 +13,8 @@ after-success:
   - docker build -t $DOCKER_USER_NAME/captivate.session-management:$TRAVIS_COMMIT .
   - docker tag $DOCKER_USER_NAME/captivate.session-management:$TRAVIS_COMMIT $DOCKER_USER_NAME/captivate.session-management:latest
   - docker push $DOCKER_USER_NAME/captivate.session-management:latest
-  - docker push $DOCKER_USER_NAME/captivate.session-management:$TRAVIS_COMMIT
-   - curl -X POST http://captivate:$JENKINS_USER_TOKEN@$JENKINS_URL/job/deploy_session_management/build?token=$JENKINS_JOB_TOKEN
+  - docker push $DOCKER_USER_NAME/captivate.session-management:$TRAVIS_COMMIT  
+  - curl -X POST http://captivate:$JENKINS_USER_TOKEN@$JENKINS_URL/job/deploy_session_management/build?token=$JENKINS_JOB_TOKEN
 
 branches:
   only:
