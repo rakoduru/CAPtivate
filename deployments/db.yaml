@@ -1,0 +1,184 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-retrieval-db
+spec:
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+  selector:
+    app: data-retrieval-db
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-retrieval-db-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-retrieval-db
+  template:
+    metadata:
+      labels:
+        app: data-retrieval-db
+    spec:
+      containers:
+      - name: data-retrieval-db
+        image: mongo:4.0.4
+        ports:
+        - containerPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-execution-db
+spec:
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+  selector:
+    app: model-execution-db
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-execution-db-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: model-execution-db
+  template:
+    metadata:
+      labels:
+        app: model-execution-db
+    spec:
+      containers:
+      - name: model-execution-db
+        image: mongo:4.0.4
+        ports:
+        - containerPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: post-process-db
+spec:
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+  selector:
+    app: post-process-db
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-process-db-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post-process-db
+  template:
+    metadata:
+      labels:
+        app: post-process-db
+    spec:
+      containers:
+      - name: post-process-db
+        image: mongo:4.0.4
+        ports:
+        - containerPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: session-management-db
+spec:
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+  selector:
+    app: session-management-db
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: session-management-db-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: session-management-db
+  template:
+    metadata:
+      labels:
+        app: session-management-db
+    spec:
+      containers:
+      - name: session-management-db
+        image: mongo:4.0.4
+        ports:
+        - containerPort: 27017
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-management-db
+spec:
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
+  selector:
+    app: user-management-db
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-management-db-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-management-db
+  template:
+    metadata:
+      labels:
+        app: user-management-db
+    spec:
+      containers:
+      - name: user-management-db
+        image: mysql:8.0.19
+        ports:
+        - containerPort: 3306
+        env:
+          - name : MYSQL_ROOT_PASSWORD
+            value : root.CAP2020
+          - name : MYSQL_DATABASE
+            value : ads_docker
+
