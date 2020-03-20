@@ -6,8 +6,11 @@ script:
 
 after-success:
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_PASSWORD
-  - docker build -t $DOCKER_USER_NAME/captivate.user-management:latest .
+  - docker build -t $DOCKER_USER_NAME/captivate.user-management:$TRAVIS_COMMIT .
+  - docker tag $DOCKER_USER_NAME/captivate.user-management:$TRAVIS_COMMIT $DOCKER_USER_NAME/captivate.user-management:latest
   - docker push $DOCKER_USER_NAME/captivate.user-management:latest
+  - docker push $DOCKER_USER_NAME/captivate.user-management:$TRAVIS_COMMIT
+  - curl -X POST http://captivate:$JENKINS_USER_TOKEN@$JENKINS_URL/job/deploy_user_management/build?token=$JENKINS_JOB_TOKEN
 
 branches:
   only:
