@@ -51,7 +51,8 @@ spec:
     spec:
       containers:
       - name: post-process
-        image: adiselv/captivate.post-process:0.0.1
+        image: adiselv/captivate.post-process:latest
+        imagePullPolicy: Always
         env:
           - name : KAFKA_SERVER
             value : kafka-service:9092
