@@ -1,4 +1,4 @@
-pipeline{
+node{
   
     stage("Git Clone")
     {
