@@ -68,7 +68,8 @@ spec:
     spec:
       containers:
       - name: user-management
-        image: adiselv/captivate.user-management:0.0.1
+        image: adiselv/captivate.user-management:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8181
         env:
