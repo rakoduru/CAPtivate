@@ -7,7 +7,7 @@ node{
     stage('Building Docker Image')
     {
 		//echo %GIT_COMMIT%
-        COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
+        //COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
         echo GIT_BRANCH
     
 		// dir ('./UserManagement') {
