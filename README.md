@@ -32,7 +32,7 @@ cd kafka
 docker-compose up -d
 ```
 
-This should create a kafka broker listening on `localhost:9092` with the following topics
+This should create a kafka broker listening on `localhost:9092` with the following topics 
 
 ```
 usermanagement
