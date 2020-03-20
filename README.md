@@ -9,7 +9,7 @@ Feel free to create issues and report bugs if you find something wrong in the pr
 
 ### Maintainers
 
-#### Adithya Selvaprithiviraj
+#### Adithya Selvaprithiviraj 
 #### Rasmitha Choudary Koduru
 #### Shubhangi Shrivastava
 
