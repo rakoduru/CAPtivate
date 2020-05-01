@@ -1,0 +1,78 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: data-retrieval-db
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - captivate-gateway
+  http:
+  - route:
+    - destination:
+        host: data-retrieval-db
+        
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: model-execution-db
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - captivate-gateway
+  http:
+  - route:
+    - destination:
+        host: model-execution-db
+        
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: post-process-db
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - captivate-gateway
+  http:
+  - route:
+    - destination:
+        host: post-process-db
+        
+---
+
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: session-management-db
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - captivate-gateway
+  http:
+  - route:
+    - destination:
+        host: session-management-db
+        
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: user-management-db
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - captivate-gateway
+  http:
+  - route:
+    - destination:
+        host: user-management-db

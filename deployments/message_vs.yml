@@ -1,0 +1,29 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kafka-service
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - captivate-gateway
+  http:
+  - route:
+    - destination:
+        host: kafka_app
+        
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: zookeeper
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - captivate-gateway
+  http:
+  - route:
+    - destination:
+        host: zookeeper

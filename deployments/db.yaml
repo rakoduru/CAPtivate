@@ -25,6 +25,7 @@ spec:
     metadata:
       labels:
         app: data-retrieval-db
+        version: v1
     spec:
       containers:
       - name: data-retrieval-db
@@ -62,6 +63,7 @@ spec:
     metadata:
       labels:
         app: model-execution-db
+        version: v1
     spec:
       containers:
       - name: model-execution-db
@@ -99,6 +101,7 @@ spec:
     metadata:
       labels:
         app: post-process-db
+        version: v1
     spec:
       containers:
       - name: post-process-db
@@ -135,6 +138,7 @@ spec:
     metadata:
       labels:
         app: session-management-db
+        version: v1
     spec:
       containers:
       - name: session-management-db
@@ -170,6 +174,7 @@ spec:
     metadata:
       labels:
         app: user-management-db
+        version: v1
     spec:
       containers:
       - name: user-management-db
