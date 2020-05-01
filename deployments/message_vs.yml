@@ -10,7 +10,7 @@ spec:
   http:
   - route:
     - destination:
-        host: kafka_app
+        host: kafka-service
         
 ---
 
